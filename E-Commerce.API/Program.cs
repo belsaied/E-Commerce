@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Presistence.Data;
 using Presistence.Repositories;
 using Services;
+using Services.Abstraction.Contracts;
 using System.Threading.Tasks;
 
 namespace E_Commerce.API
@@ -28,6 +29,7 @@ namespace E_Commerce.API
             builder.Services.AddScoped<IDataSeeding,DataSeeding>();
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
             builder.Services.AddAutoMapper(cfg => { } , typeof(ProjectReference).Assembly);      //just empty class to recognize the assembly which the mapping profiles found.
+            builder.Services.AddScoped<IServiceManager,IServiceManager>();  
             var app = builder.Build();
             #region Call SeedData before Any Request.
             // to get an instance of DataSeeding Manually and call the method SeedData before the request executed.
