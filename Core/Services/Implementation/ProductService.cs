@@ -2,6 +2,7 @@
 using Domain.Contracts;
 using Domain.Entities.ProductModule;
 using Services.Abstraction.Contracts;
+using Services.Specifications;
 using Shared.Dtos;
 
 namespace Services.Implementation
@@ -19,7 +20,8 @@ namespace Services.Implementation
 
         public async Task<IEnumerable<ProductResultDto>> GetAllProductsAsync()
         {
-            var products = await _unitOfWork.GetReopsitory<Product,int>().GetAllAsync();
+            var specifications = new ProductWithBrandAndTypeSpecifications();
+            var products = await _unitOfWork.GetReopsitory<Product,int>().GetAllAsync(specifications);
             var productsResult = _mapper.Map<IEnumerable<ProductResultDto>>(products);
             return productsResult;
         }

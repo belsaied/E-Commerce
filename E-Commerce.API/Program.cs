@@ -1,10 +1,12 @@
 
 using Domain.Contracts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Presistence.Data;
 using Presistence.Repositories;
 using Services;
 using Services.Abstraction.Contracts;
+using Services.Implementation;
 using System.Threading.Tasks;
 
 namespace E_Commerce.API
@@ -21,6 +23,7 @@ namespace E_Commerce.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
             // allow DI for DbContext.
             builder.Services.AddDbContext<StoreDbContext>(options =>
             {
@@ -29,7 +32,7 @@ namespace E_Commerce.API
             builder.Services.AddScoped<IDataSeeding,DataSeeding>();
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
             builder.Services.AddAutoMapper(cfg => { } , typeof(ProjectReference).Assembly);      //just empty class to recognize the assembly which the mapping profiles found.
-            builder.Services.AddScoped<IServiceManager,IServiceManager>();  
+            builder.Services.AddScoped<IServiceManager,ServiceManager>();  
             var app = builder.Build();
             #region Call SeedData before Any Request.
             // to get an instance of DataSeeding Manually and call the method SeedData before the request executed.
@@ -45,7 +48,7 @@ namespace E_Commerce.API
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseAuthorization();
 
 

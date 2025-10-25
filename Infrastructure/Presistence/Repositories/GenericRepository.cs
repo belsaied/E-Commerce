@@ -8,6 +8,9 @@ namespace Presistence.Repositories
         public async Task AddAsync(TEntity entity)
             => await _dbContext.Set<TEntity>().AddAsync(entity);
 
+        public void Update(TEntity entity)
+    => _dbContext.Set<TEntity>().Update(entity);
+
         public void Delete(TEntity entity)
          => _dbContext.Set<TEntity>().Remove(entity);
 
@@ -19,7 +22,15 @@ namespace Presistence.Repositories
         public async Task<TEntity?> GetByIdAsync(TKey id)
           => await _dbContext.Set<TEntity>().FindAsync(id);
 
-        public void Update(TEntity entity)
-            => _dbContext.Set<TEntity>().Update(entity);
+        #region Specifications
+        public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> specifications)
+         => await SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specifications).ToListAsync();
+
+        public async Task<TEntity?> GetByIdAsync(ISpecifications<TEntity, TKey> specifications)
+           => await SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specifications).FirstOrDefaultAsync();
+        // AS he Can't detect that you return 1 element it is IQuerable.
+        #endregion
+
+
     }
 }
