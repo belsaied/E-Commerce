@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Services.Abstraction.Contracts;
 using Shared.Dtos;
+using Shared.Enums;
 namespace Presentation.Controllers
 {
     [ApiController]
@@ -11,8 +12,8 @@ namespace Presentation.Controllers
         // EndPoint => GetAllProducts      
         [HttpGet]  //BaseUrl/Products
         // Http Status Code 200 (success)
-        public async Task<ActionResult<IEnumerable<ProductResultDto>>> GetAllProductsAsync()
-            =>  Ok(await _serviceManager.ProductService.GetAllProductsAsync());
+        public async Task<ActionResult<IEnumerable<ProductResultDto>>> GetAllProductsAsync(int? typeId,int? brandId , ProductSortingOptions sort)
+            =>  Ok(await _serviceManager.ProductService.GetAllProductsAsync(typeId,brandId,sort));
         // EndPoint => GetAllBrands
         [HttpGet("Brands")]                  //BaseUrl/Products/Brands
         public async Task<ActionResult<IEnumerable<BrandResultDto>>> GetAllBrandsAsync()
