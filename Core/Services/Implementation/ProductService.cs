@@ -35,7 +35,8 @@ namespace Services.Implementation
 
         public async Task<ProductResultDto> GetByIdAsync(int id)
         {
-            var product = await _unitOfWork.GetReopsitory<Product, int>().GetByIdAsync(id);
+            var specifications = new ProductWithBrandAndTypeSpecifications(id);
+            var product = await _unitOfWork.GetReopsitory<Product, int>().GetByIdAsync(specifications);
             var productResult = _mapper.Map<ProductResultDto>(product);   // we don't return IEnumerable .
             return productResult;
         }
