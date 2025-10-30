@@ -29,6 +29,9 @@ namespace Presistence.Repositories
         public async Task<TEntity?> GetByIdAsync(ISpecifications<TEntity, TKey> specifications)
            => await SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specifications).FirstOrDefaultAsync();
         // AS he Can't detect that you return 1 element it is IQuerable.
+        public async Task<int> CountAsync(ISpecifications<TEntity, TKey> specifications)
+            => await SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(),specifications).CountAsync();
+        
         #endregion
 
 

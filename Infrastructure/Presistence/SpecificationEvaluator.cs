@@ -19,6 +19,8 @@ namespace Presistence
             if(specifications.IncludeExpressions is not null && specifications.IncludeExpressions.Count > 0)
                 query= specifications.IncludeExpressions.Aggregate(query,(currentQuery,expression)=> currentQuery.Include(expression));
             
+            if(specifications.IsPaginated)
+                query = query.Skip(specifications.Skip).Take(specifications.Take);
             return query;
         }
     }

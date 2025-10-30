@@ -13,5 +13,10 @@ namespace Domain.Contracts
         // Singature for OrderBy,OrderByDescending [Expression]
         public Expression<Func<TEntity,object>> OrderBy { get; }
         public Expression<Func<TEntity, object>> OrderByDescending { get; }
+
+        // Pagination.
+        public int Skip { get; }
+        public int Take { get; }
+        public bool IsPaginated { get; }
     }
 }

@@ -1,4 +1,3 @@
-
 using Domain.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +7,7 @@ using Services;
 using Services.Abstraction.Contracts;
 using Services.Implementation;
 using System.Threading.Tasks;
-
+using System.Text.Json.Serialization;
 namespace E_Commerce.API
 {
     public class Program
@@ -18,8 +17,11 @@ namespace E_Commerce.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
-            builder.Services.AddControllers();
+            // using AddJsonOptions to handle the Enum vlaues in the drop down of the Swagger.
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
