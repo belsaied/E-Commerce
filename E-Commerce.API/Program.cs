@@ -8,6 +8,8 @@ using Services.Abstraction.Contracts;
 using Services.Implementation;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
+using E_Commerce.API.Middlewares;
+using E_Commerce.API.Factories;
 namespace E_Commerce.API
 {
     public class Program
@@ -25,7 +27,10 @@ namespace E_Commerce.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = ApiResponseFactory.CustomValidationErrorResponse;
+            });
             // allow DI for DbContext.
             builder.Services.AddDbContext<StoreDbContext>(options =>
             {
@@ -40,9 +45,10 @@ namespace E_Commerce.API
             // to get an instance of DataSeeding Manually and call the method SeedData before the request executed.
            using var scope = app.Services.CreateScope();
             var objOfDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-           await objOfDataSeeding.SeedDataAsync(); 
+           await objOfDataSeeding.SeedDataAsync();
             #endregion
             // Configure the HTTP request pipeline.
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
