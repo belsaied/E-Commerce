@@ -1,0 +1,31 @@
+﻿using Domain.Contracts;
+using E_Commerce.API.Middlewares;
+
+namespace E_Commerce.API.Extensions
+{
+    public  static class WebApplicationExtensions
+    {
+        public static async Task<WebApplication> SeedDatabaseAsync(this WebApplication app)
+        {
+            #region Call SeedData before Any Request.
+            // to get an instance of DataSeeding Manually and call the method SeedData before the request executed.
+            using var scope = app.Services.CreateScope();
+            var objOfDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
+            await objOfDataSeeding.SeedDataAsync();
+            #endregion
+            return app;
+        }
+        public static WebApplication UseExceptionHandlingMiddleWare(this WebApplication app)
+        {
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+            return app;
+        }
+        
+        public static WebApplication UseSwaggerMiddlewares(this  WebApplication app)
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            return app;
+        }
+    }
+}

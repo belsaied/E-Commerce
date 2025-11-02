@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Abstraction.Contracts;
 using Shared;
 using Shared.Dtos;
-using Shared.Enums;
+using Shared.ErrorModels;
 namespace Presentation.Controllers
 {
     [ApiController]
@@ -23,6 +23,12 @@ namespace Presentation.Controllers
         [HttpGet("Types")]
         public async Task<ActionResult<IEnumerable<TypeResultDto>>> GetAllTypesAsync()
             => Ok(await _serviceManager.ProductService.GetAllTypesAsync());
+
+        [ProducesResponseType(typeof(ProductResultDto),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDetails),StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ErrorDetails),StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ValidationErrorResponse),StatusCodes.Status400BadRequest)]
+
         // EndPoint => GetProductsById
         [HttpGet("{id:int}")]         ////BaseUrl/Products/{id}
         public async Task<ActionResult<ProductResultDto>> GetProductByIdAsync(int id)
