@@ -15,7 +15,7 @@ namespace E_Commerce.API
             builder.Services.AddInfrasturctureServices(builder.Configuration);
 
             // Core Services.
-            builder.Services.AddCoreServices();
+            builder.Services.AddCoreServices(builder.Configuration);
             #endregion
 
             #region Piplines.
@@ -32,9 +32,8 @@ namespace E_Commerce.API
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseAuthorization();
-
-
             app.MapControllers();
 
             app.Run(); 

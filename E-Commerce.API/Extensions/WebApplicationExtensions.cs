@@ -1,5 +1,7 @@
 ﻿using Domain.Contracts;
 using E_Commerce.API.Middlewares;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Text.Json;
 
 namespace E_Commerce.API.Extensions
 {
@@ -12,6 +14,7 @@ namespace E_Commerce.API.Extensions
             using var scope = app.Services.CreateScope();
             var objOfDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
             await objOfDataSeeding.SeedDataAsync();
+            await objOfDataSeeding.SeedIdentityDataAsync();
             #endregion
             return app;
         }
@@ -24,7 +27,21 @@ namespace E_Commerce.API.Extensions
         public static WebApplication UseSwaggerMiddlewares(this  WebApplication app)
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(options =>
+            {
+                options.ConfigObject = new Swashbuckle.AspNetCore.SwaggerUI.ConfigObject()
+                {
+                    DisplayRequestDuration = true
+                };
+                options.DocumentTitle = "My E-Commerce API";
+                options.JsonSerializerOptions = new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                };
+                options.DocExpansion(DocExpansion.None);
+                options.EnableFilter();
+                options.EnablePersistAuthorization();
+            });
             return app;
         }
     }
