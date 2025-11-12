@@ -7,6 +7,8 @@ namespace Domain.Entities.OrderModule
     {
         public Order(string userEmail, ShippingAddress shippingAddress, ICollection<OrderItem> orderItems, DeliveryMethod deliveryMethod, decimal subTotal)
         {
+            // SQL does't initialize the Guid values it is the EF who do it so i must put it so he can initialize a new Guid as an Id.
+            Id = Guid.NewGuid();
             UserEmail = userEmail;
             ShippingAddress = shippingAddress;
             OrderItems = orderItems;
