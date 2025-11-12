@@ -19,32 +19,7 @@ namespace E_Commerce.API.Extensions
 
             services.AddEndpointsApiExplorer();
 
-            services.AddSwaggerGen(options =>
-            {
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                {
-                    In = ParameterLocation.Header,
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    Description = "Enter 'Bearer' Followed By Space And Your Token"
-                });
-
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Id = "Bearer",
-                    Type = ReferenceType.SecurityScheme
-                }
-            },
-            new string[] { }
-        }
-    });
-            });
+            services.AddSwaggerGen();
 
             services.Configure<ApiBehaviorOptions>(options =>
             {

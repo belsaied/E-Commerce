@@ -6,7 +6,7 @@ using Shared.Dtos.BasketModule;
 
 namespace Presentation.Controllers
 {
-    [Authorize]
+   [Authorize]
     public class BasketController(IServiceManager _serviceManager):ApiController
     {
         //Get

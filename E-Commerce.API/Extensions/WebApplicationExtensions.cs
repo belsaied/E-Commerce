@@ -27,21 +27,7 @@ namespace E_Commerce.API.Extensions
         public static WebApplication UseSwaggerMiddlewares(this  WebApplication app)
         {
             app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                options.ConfigObject = new Swashbuckle.AspNetCore.SwaggerUI.ConfigObject()
-                {
-                    DisplayRequestDuration = true
-                };
-                options.DocumentTitle = "My E-Commerce API";
-                options.JsonSerializerOptions = new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-                options.DocExpansion(DocExpansion.None);
-                options.EnableFilter();
-                options.EnablePersistAuthorization();
-            });
+            app.UseSwaggerUI();
             return app;
         }
     }
