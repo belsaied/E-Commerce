@@ -6,5 +6,9 @@
         {
             
         }
+        public DeliveryMethodNotFoundException(string msg):base(msg)
+        {
+            
+        }
     }
 }

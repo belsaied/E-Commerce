@@ -8,7 +8,7 @@ namespace Presistence.Data.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.OwnsOne(o => o.ShippingAddress, sh => sh.WithOwner());
-            builder.HasMany(o => o.OrderItems).WithOne();
+            builder.HasMany(o => o.OrderItems).WithOne().OnDelete(DeleteBehavior.Cascade);
             // when storing in the DB i store it as string and when i retrive to C# i retrive it as Enum.
             builder.Property(o => o.PaymentStatus).HasConversion(
                 ps => ps.ToString(), ps => Enum.Parse<OrderPaymentStatus>(ps));

@@ -5,7 +5,7 @@ namespace Domain.Entities.OrderModule
 {
     public class Order :BaseEntity<Guid>
     {
-        public Order(string userEmail, ShippingAddress shippingAddress, ICollection<OrderItem> orderItems, DeliveryMethod deliveryMethod, decimal subTotal)
+        public Order(string userEmail, ShippingAddress shippingAddress, ICollection<OrderItem> orderItems, DeliveryMethod deliveryMethod, decimal subTotal,string paymentIntentId)
         {
             // SQL does't initialize the Guid values it is the EF who do it so i must put it so he can initialize a new Guid as an Id.
             Id = Guid.NewGuid();
@@ -14,6 +14,7 @@ namespace Domain.Entities.OrderModule
             OrderItems = orderItems;
             DeliveryMethod = deliveryMethod;
             SubTotal = subTotal;
+            PaymentIntentId = paymentIntentId;
         }
         public Order()
         {

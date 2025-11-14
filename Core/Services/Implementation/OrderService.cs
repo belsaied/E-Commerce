@@ -26,17 +26,29 @@ namespace Services.Implementation
                     throw new ProductNotFoundException(item.Id);
                 orderItems.Add(CreateOrderItem(item, product));
             }
-            // Delivery Method.
-            var deliveryMethod = await unitOfWork.GetReopsitory<DeliveryMethod, int>().GetByIdAsync(orderRequest.DeliveryMethodId)
+            var orderRepo = unitOfWork.GetReopsitory<Order, Guid>();
+
+            //[3] GetDeliveryMethod ==> DeliverMethodId = DB
+            var deliveryMethod = await unitOfWork.GetReopsitory<DeliveryMethod, int>()
+                .GetByIdAsync(orderRequest.DeliveryMethodId)
                 ?? throw new DeliveryMethodNotFoundException(orderRequest.DeliveryMethodId);
-            // SubTotal
-            var subTotal = orderItems.Sum(item => item.Price *  item.Quantity);
-            // *******Create order
-            var orderToCreate = new Order(userEmail, address, orderItems, deliveryMethod, subTotal);
-            // Save to DB
-            await unitOfWork.GetReopsitory<Order, Guid>().AddAsync(orderToCreate);
+
+            var orderExisit = await orderRepo.GetByIdAsync(new OrderWithPaymentIntentIdSpecifications(basket.PaymentIntentId));
+            if (orderExisit != null)
+            {
+                orderRepo.Delete(orderExisit);
+                //ORDERITEMS ==> Order
+            }
+
+            //[4] Calculate SubTotal ==> OrderItem.Q * OrderItem.Price
+            var subTotal = orderItems.Sum(o => o.Price * o.Quantity);
+
+            //[5] Create obj from order ==> params , Add DB , Save Changes
+            var orderToCreate = new Order(userEmail, address, orderItems, deliveryMethod, subTotal, basket.PaymentIntentId);
+            await orderRepo.AddAsync(orderToCreate);
             await unitOfWork.SaveChangesAsync();
-            // Map & Return .
+
+            //[6] Map <order, OrderResult>
             return mapper.Map<OrderResult>(orderToCreate);
         }
 
