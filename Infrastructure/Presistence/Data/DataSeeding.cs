@@ -1,5 +1,6 @@
 ﻿global using Domain.Contracts;
 using Domain.Entities.IdentityModule;
+using Domain.Entities.OrderModule;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json;
 
@@ -47,6 +48,15 @@ namespace Presistence.Data
                     var products = await JsonSerializer.DeserializeAsync<List<Product>>(productsData);
                     if (products is not null && products.Any())
                         await _dbContext.Products.AddRangeAsync(products);
+                }
+                // Add Section for Delivery Method while implementing the OrderModule.
+                if(!_dbContext.DeliveryMethods.Any())
+                {
+                    var deliveryMethodsData = File.OpenRead("..\\Infrastructure\\Presistence\\Data\\DataSeed\\delivery.json");
+                    // json -> C# Object like [List<Product>]
+                    var deliveryMethods = await JsonSerializer.DeserializeAsync<List<DeliveryMethod>>(deliveryMethodsData);
+                    if (deliveryMethods is not null && deliveryMethods.Any())
+                        await _dbContext.DeliveryMethods.AddRangeAsync(deliveryMethods);
                 }
                 await _dbContext.SaveChangesAsync();
             }
