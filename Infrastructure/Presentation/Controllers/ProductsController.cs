@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Attributes;
 using Services.Abstraction.Contracts;
 using Shared;
 using Shared.Dtos.ProductModule;
@@ -8,6 +9,7 @@ namespace Presentation.Controllers
 {
     public class ProductsController(IServiceManager _serviceManager):ApiController
     {
+        [RedisCache]
         // EndPoint => GetAllProducts      
         [HttpGet]  //BaseUrl/Products
         // Http Status Code 200 (success)

@@ -12,7 +12,7 @@ namespace Services.Implementation
 {
     public class ServiceManager(IUnitOfWork _unitOfWork,IMapper _mapper 
         ,IBasketRepository _basketRepository,UserManager<User> _userManager
-        ,IOptions<JwtOptions> _options, IConfiguration _configuration) : IServiceManager
+        ,IOptions<JwtOptions> _options, IConfiguration _configuration) /*:  IServiceManager*/
     {
         private readonly Lazy<IProductService> _productService = new Lazy<IProductService>(() => new ProductService(_unitOfWork,_mapper));
         private readonly Lazy<IBasketService> _basketService = new Lazy<IBasketService>(() => new BasketService(_basketRepository, _mapper));

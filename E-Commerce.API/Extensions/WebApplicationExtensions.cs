@@ -28,6 +28,21 @@ namespace E_Commerce.API.Extensions
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+            //app.UseSwaggerUI(options =>
+            //{
+            //    options.ConfigObject = new Swashbuckle.AspNetCore.SwaggerUI.ConfigObject()
+            //    {
+            //        DisplayRequestDuration = true
+            //    };
+            //    options.DocumentTitle = "My E-Commerce API";
+            //    options.JsonSerializerOptions = new JsonSerializerOptions()
+            //    {
+            //        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            //    };
+            //    options.DocExpansion(DocExpansion.None);
+            //    options.EnableFilter();
+            //    options.EnablePersistAuthorization();
+            //});
             return app;
         }
     }

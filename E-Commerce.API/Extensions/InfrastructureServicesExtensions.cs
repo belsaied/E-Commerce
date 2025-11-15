@@ -41,6 +41,7 @@ namespace E_Commerce.API.Extensions
                 options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<IdentityStoreDbContext>();
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<ICacheRepository,CacheRepository>();
             services.ValidateJwt(configuration);
             return services;
         }

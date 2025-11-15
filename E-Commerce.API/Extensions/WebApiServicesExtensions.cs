@@ -22,13 +22,39 @@ namespace E_Commerce.API.Extensions
                 options.AddPolicy("CorsPolicy", builder =>
                 {
                     builder.AllowAnyHeader().AllowAnyMethod()
-                    .WithOrigins(frontUrl);
+                    .WithOrigins(frontUrl)
+                    .AllowCredentials();
                 });
             });
             services.AddEndpointsApiExplorer();
 
             services.AddSwaggerGen();
+    //        services.AddSwaggerGen(options =>
+    //        {
+    //            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    //            {
+    //                In = ParameterLocation.Header,
+    //                Name = "Authorization",
+    //                Type = SecuritySchemeType.ApiKey,
+    //                Scheme = "Bearer",
+    //                Description = "Enter 'Bearer' Followed By Space And Your Token"
+    //            });
 
+    //            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    //{
+    //    {
+    //        new OpenApiSecurityScheme
+    //        {
+    //            Reference = new OpenApiReference
+    //            {
+    //                Id = "Bearer",
+    //                Type = ReferenceType.SecurityScheme
+    //            }
+    //        },
+    //        new string[] { }
+    //    }
+    //});
+    //        });
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = ApiResponseFactory.CustomValidationErrorResponse;
