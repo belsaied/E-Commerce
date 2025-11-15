@@ -8,7 +8,7 @@ namespace E_Commerce.API.Extensions
 {
     public static class WebApiServicesExtensions
     {
-        public static IServiceCollection AddWebApiServices(this IServiceCollection services)
+        public static IServiceCollection AddWebApiServices(this IServiceCollection services , IConfiguration configuration)
         {
             // Add services to the container.
             // using AddJsonOptions to handle the Enum values in the drop down of the Swagger.
@@ -16,7 +16,15 @@ namespace E_Commerce.API.Extensions
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
-
+            var frontUrl = configuration.GetSection("URLS")["FrontUrl"];
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.AllowAnyHeader().AllowAnyMethod()
+                    .WithOrigins(frontUrl);
+                });
+            });
             services.AddEndpointsApiExplorer();
 
             services.AddSwaggerGen();

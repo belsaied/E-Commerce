@@ -15,12 +15,12 @@ namespace Services.Implementation
         public async Task<OrderResult> CreateOrderAsync(OrderRequest orderRequest, string userEmail)
         {
             // Map Address AKA[ShippingAddress]
-            var address = mapper.Map<Address>(orderRequest.ShippingAddress);
+            var address = mapper.Map<Address>(orderRequest.ShipToAddress);
             // Get Basket using BasketId.
             var basket = await basketRepository.GetBasketAsync(orderRequest.BasketId) ?? throw new BasketNotFoundException(orderRequest.BasketId);
             // Get OrderItems before adding them to DB.
             var orderItems = new List<OrderItem>();
-            foreach(var item in basket.BasketItems)
+            foreach(var item in basket.Items)
             {
                 var product = await unitOfWork.GetReopsitory<Product, int>().GetByIdAsync(item.Id) ??
                     throw new ProductNotFoundException(item.Id);

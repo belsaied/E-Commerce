@@ -1,4 +1,5 @@
 using E_Commerce.API.Extensions;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 namespace E_Commerce.API
 {
     public class Program
@@ -9,7 +10,7 @@ namespace E_Commerce.API
             #region DI Container.
             var builder = WebApplication.CreateBuilder(args);
             // Web API services.
-            builder.Services.AddWebApiServices();
+            builder.Services.AddWebApiServices(builder.Configuration);
 
             // Infrastructure Services.
             builder.Services.AddInfrasturctureServices(builder.Configuration);
@@ -32,6 +33,7 @@ namespace E_Commerce.API
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
